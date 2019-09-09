@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use App\Product;
 use App\Category;
 use App\Tag;
+use Mail;
 
 class ProductController extends Controller
 {
@@ -40,8 +41,13 @@ public function store(Request $request){
    }
 
    session()->flash('message', 'Product successfully created.');
+   $data = array ('product'=>$product);
    
-   
+   Mail::send('emails.product_created', $data, function($message) {
+       $message->to('abc@gmail.com', 'laravel eMail Tutorial')->subject('Laravel Basic Testing Mail');
+       $message->from('xyz@gmail.com','Richa Gurung');
+   });
+
    return redirect(url('/products'));
 }
 
